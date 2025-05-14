@@ -1,61 +1,100 @@
 import os; os.system('cls')
 
 pets={}
-infos_pets=[]
 
-
-def adicionar():
-               nome= input("Nome do seu pet: ").capitalize()
-               especie=input("Espécie do seu pet: ").capitalize()
-               raca=input("Raça do seu pet: ").capitalize()
-               data=input("Data de nascimento do seu pet DD/MM/AAAA: ")
-               peso=input("Peso do seu pet em kg: ")
-               print("Pet Adicionado com Sucesso!")
-               #adicionar no dicionário
-               infos_pets.append(especie)
-               infos_pets.append(raca)
-               infos_pets.append(data)
-               infos_pets.append(peso)
-               for i in range(5):
-                    pets.update({nome: infos_pets})
-               print(pets)
-               #adicionar no arquivo
-               file_pets=open("pets.txt", "w", encoding="utf-8")
-               file_pets.write("\nNome do Pet: "+nome +" \nEspécie: "+especie+" \nRaça: "+raca+" \nData de nascimento:"+data+" \nPeso: "+ peso+" kg")
-               file_pets.close()
-               
-
+def adicionar(indice):
+    file_pets=open("pets.txt", "a", encoding="utf-8")
     
+    nome=input("Nome do seu pet: ").capitalize()
+    especie=input("Espécie: ").capitalize()
+    raca=input("Raça: ").capitalize()
+    data=input("Data de nascimento (DD/MM/AAA): ")
+    peso=input("Peso em kg: ")
+    
+    pets=(f"{indice}: Nome do pet: {nome} \nEspécie: {especie} \nRaça: {raca} \nData de nascimento: {data} \nPeso: {peso} kg\n")
+    indice+=1
+    file_pets.write(pets)
+    print("Pet registrado com sucesso!")
+    file_pets.close()
+
+    file=open("indice.txt", "w", encoding="utf-8")
+    file.write(str(indice))
+    file.close()
+
+    return indice
+
 def visualizar():
-     file_pets=open("pets.txt", "r", encoding="utf-8")
-     print(file_pets.read())
-     file_pets.close()
+    file_pets=open("pets.txt", "r", encoding="utf-8")
+    total=file_pets.readlines()
+    print("Pets Registrados:")
+    print("".join(total).strip())
+
+def converter(lista):
+    for linha in lista:
+        if (linha == ''): 
+            break
+        num = ""
+        indice = 0
+        while(linha[indice] != ":"):
+            num += linha[indice]
+            indice += 1
+
+        pets[num] = linha[:] + "\n"
+
+def editar(pets):
+    file_pets=open("pets.txt", "r", encoding="utf-8")
+    lista=file_pets.read().split("\n")
+    converter(lista)
+
+    print("Pessoas Cadastradas: ")
+    print("\n".join(lista).strip())
+    file_pets.close()
+
+    num_editar=input("Digite o número do pet que você deseja editar: ")
+    novo_nome=input("Nome do seu pet: ").capitalize()
+    nova_especie=input("Espécie: ").capitalize()
+    nova_raca=input("Raça: ").capitalize()
+    nova_data=input("Data de nascimento (DD/MM/AAA): ")
+    novo_peso=input("Peso em kg: ")  
+    pets[num_editar]=(f"{num_editar}: Nome do pet: {novo_nome} \nEspécie: {nova_especie} \nRaça: {nova_raca} \nData de nascimento: {nova_data} \nPeso: {novo_peso} kg\n")
+
+    file_pets=open("pets.txt", "w", encoding="utf-8")
+
+    print(pets)
+    for i in pets: 
+        file_pets.writelines(pets[i])
+    print("Editado com Sucesso")
+    file_pets.close()
+
+def excluir(pets):
+    file_pets=open("pets.txt", "r", encoding="utf-8")
+    lista=file_pets.read().split("\n")
+    print("\n".join(lista).strip())
+
+    converter(lista)
+
+    nome_excluir=input("Digite o número do pet que você deseja excluir: ")
+    
+    file_pets=open("pets.txt", "w", encoding="utf-8")
+    pets.pop(nome_excluir)
+
+    for i in pets: 
+        file_pets.writelines(pets[i])
+    print("Pet excluído com Sucesso!")
+    file_pets.close()
 
 
-def editar(): #dando erro ao passar a info nova pro dicionario // ao resetar as informações n ficam salvas no dicionario, so se adcionar de novo
-     for i in pets.keys():
-           print(i)
-     pet_modificar=input("Qual pet você deseja modificar? Digite o nome: ").capitalize()
-     info_modificar=int(input("Qual dado você deseja modificar? \n1-Nome \n2-Espécie \n3-Raça \n4-Data de Nascimento \n5-Peso \nOpção: "))
-     if info_modificar==1:
-           info_nova=input("Digite o novo nome do seu pet: ").capitalize()
-           pets[pet_modificar][info_modificar-1]=info_nova
-           #erro na mudança de nome
-     if info_modificar==2:
-           info_nova=input("Digite a nova espécie do seu pet: ").capitalize()
-           pets[pet_modificar][info_modificar-1]=info_nova      
-     if info_modificar==3:
-           info_nova=input("Digite a nova raça do seu pet: ").capitalize()
-           pets[pet_modificar][info_modificar-1]=info_nova
-     if info_modificar==4:
-           info_nova=input("Digite a nova data de nascimento do seu pet (DD/MM/AAA): ")
-           pets[pet_modificar][info_modificar-1]=info_nova            
-     if info_modificar==5:
-           info_nova=input("Digite o novo peso do seu pet em kg: ")
-           pets[pet_modificar][info_modificar-1]=info_nova
-     print("Modificado com sucesso!")
-     print(pets)
-   
+try:
+    file=open("indice.txt", "r", encoding="utf-8")
+except FileNotFoundError:
+    file=open("indice.txt", "w", encoding="utf-8")
+    file.write("1")
+    file.close()
+    file=open("indice.txt", "r", encoding="utf-8")
+
+indice=(int(file.read()))
+
+file.close()
 
 while True:
      print("-="*30)
@@ -67,15 +106,19 @@ while True:
      print("5- Sair")
      escolha=int(input("Opção: "))
 
+      
      if escolha==1:
-         adicionar()
+           adicionar(indice)
      elif escolha==2:
-         visualizar()
+           visualizar()
      elif escolha==3:
-          editar()
-           
+           editar(pets)
+     elif escolha==4:
+           excluir(pets)
      elif escolha==5:
-         break
+           break
+     else:
+           print("Opção Inválida! ")
 
 
 
