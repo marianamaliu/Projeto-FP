@@ -22,22 +22,26 @@ def editar():
     nome_antigo = input("Digite o nome do pet que você deseja editar: ").capitalize()
     for i in range(len(PETS)):
         if (PETS[i]["nome"])==nome_antigo:
-            del PETS[i] #erro
-      
-    
-    novo_nome = input("Novo nome: ").capitalize()
-    nova_especie = input("Espécie: ").capitalize()
-    nova_raca = input("Raça: ").capitalize()
-    nova_data = input("Data: ")
-    novo_peso = input("Peso em kg: ")
-    PETS.append({"nome": novo_nome, "especie": nova_especie, "raca": nova_raca, "data": nova_data, "peso": novo_peso})
-    gravar_arquivo()
+            print("Digite os novos dados:")
+            novo_nome = input("Novo nome: ").capitalize()
+            nova_especie = input("Espécie: ").capitalize()
+            nova_raca = input("Raça: ").capitalize()
+            nova_data = input("Data: ")
+            novo_peso = input("Peso em kg: ")
+            PETS[i]=({"nome": novo_nome, "especie": nova_especie, "raca": nova_raca, "data": nova_data, "peso": novo_peso})
+            print("Pet atualizado com sucesso!")
+        else:
+            print("Pet não encontrado.")
+
 
 def remover():
     nome_remover = input("Digite o nome do pet que você deseja excluir: ").capitalize()
     for i in range(len(PETS)):
         if (PETS[i]["nome"])==nome_remover:
-            PETS.pop(nome_remover) #erro
+            del PETS[i]
+            print("Pet removido com sucesso!")
+        else:
+            print("Pet não encontrado.")
 
 def ler_arquivo():
     arquivo = open("pets.txt", "r", encoding="utf-8")
@@ -52,7 +56,7 @@ def ler_arquivo():
             "especie": lista[1], 
             "raca": lista[2], 
             "data": lista[3], 
-            "peso": lista[4]
+            "peso": lista[4] 
         })
     arquivo.close()
 
