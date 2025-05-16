@@ -10,7 +10,7 @@ def CRUD():
         raca = input("Raça: ").capitalize()
         data = input("Data: ")
         peso = input("Peso em kg: ")
-        PETS.append({"nome": nome, "especie": especie, "raca": raca, "data": data, "peso": peso})
+        PETS.append({"Nome": nome, "Espécie": especie, "Raça": raca, "Data": data, "Peso": peso})
 
     def visualizar():
         for nome in PETS:
@@ -20,17 +20,17 @@ def CRUD():
 
     def editar():
         for i in range(len(PETS)):
-            print(f"-{PETS[i]["nome"]}")
+            print(f"-{PETS[i]["Nome"]}")
         nome_antigo = input("Digite o nome do pet que você deseja editar: ").capitalize()
         for i in range(len(PETS)):
-            if (PETS[i]["nome"])==nome_antigo:
+            if (PETS[i]["Nome"])==nome_antigo:
                 print("NOVOS DADOS")
                 novo_nome = input("Novo nome: ").capitalize()
                 nova_especie = input("Espécie: ").capitalize()
                 nova_raca = input("Raça: ").capitalize()
                 nova_data = input("Data: ")
                 novo_peso = input("Peso em kg: ")
-                PETS[i]=({"nome": novo_nome, "especie": nova_especie, "raca": nova_raca, "data": nova_data, "peso": novo_peso})
+                PETS[i]=({"Nome": novo_nome, "Espécie": nova_especie, "Raça": nova_raca, "Data": nova_data, "Peso": novo_peso})
                 print("Pet atualizado com sucesso!")
                 break 
             else:
@@ -38,12 +38,11 @@ def CRUD():
 
 
     def remover():
-        print(PETS)
         for i in range(len(PETS)):
-            print(f"-{PETS[i]["nome"]}")
+            print(f"-{PETS[i]["Nome"]}")
         nome_remover = input("Digite o nome do pet que você deseja excluir: ").capitalize()
         for i in range(len(PETS)):
-            if PETS[i]["nome"]==nome_remover: 
+            if PETS[i]["Nome"]==nome_remover: 
                 del PETS[i]
                 print("Pet removido com sucesso!")
                 break
@@ -58,11 +57,11 @@ def CRUD():
                 break
             lista = linha.split(",")
             PETS.append({
-                "nome": lista[0], 
-                "especie": lista[1], 
-                "raca": lista[2], 
-                "data": lista[3], 
-                "peso": lista[4] 
+                "Nome": lista[0], 
+                "Espécie": lista[1], 
+                "Raça": lista[2], 
+                "Data": lista[3], 
+                "Peso": lista[4] 
             })
         arquivo.close()
 
@@ -83,7 +82,7 @@ def CRUD():
         print("3- Editar Pet")
         print("4- Excluir Registros do Pet")
         print("5- Sair")
-        escolha=int(input("Opção: "))
+        escolha=int(input("\nOpção: "))
 
         if escolha==1:
             adicionar()
@@ -99,7 +98,7 @@ def CRUD():
         elif escolha==5:    
             break
         else:
-            print("Opção Inválida! ")
+            print("Opção Inválida.")
 
 def CUIDADOS():
     def eventos():
@@ -122,7 +121,7 @@ def CUIDADOS():
 
     def acompanhar():
         for i in range(len(EVENTOS)):
-            print(f"-{EVENTOS[i]["Nome"]}")
+            print(f"-{EVENTOS[i]["Nome"]}: {EVENTOS[i]["Evento"]}")
         nome_escolhido=input("Qual o nome do pet de quem você deseja marcar o evento como feito? ").capitalize()
         for i in range(len(EVENTOS)):
             if (EVENTOS[i]["Nome"])==nome_escolhido: 
@@ -180,19 +179,24 @@ def CUIDADOS():
         elif escolha==4:
             break
         else:
-            print("Opção Inválida")
+            print("Opção Inválida.")
+
 
 while True:
     print("-="*50)
     print("Bem-vindo ao Vida Pet")
     print("1- CRUD")
     print("2- Cuidados e Eventos")
-    print("3- Sair")
+    print("3- Metas e Atualizações")
+    print("4- Sair")
     escolha=int(input("\nOpção: "))
 
     if escolha==1:
         CRUD()
     elif escolha==2:
         CUIDADOS()
-    elif escolha==3:
+  
+    elif escolha==4:
         break
+    else:
+        print("Opção Inválida.")
