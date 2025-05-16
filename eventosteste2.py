@@ -21,7 +21,7 @@ def visualizar():
 
 def acompanhar():
     for i in range(len(EVENTOS)):
-        print(f"-{EVENTOS[i]["Nome"]}")
+        print(f"-{EVENTOS[i]["Nome"]}: {EVENTOS[i]["Evento"]}")
     nome_escolhido=input("Qual o nome do pet de quem você desja marcar o evento como feito? ").capitalize()
     for i in range(len(EVENTOS)):
         if (EVENTOS[i]["Nome"])==nome_escolhido:
