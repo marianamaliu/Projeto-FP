@@ -81,7 +81,7 @@ while True:
     print("3- Editar Pet")
     print("4- Excluir Registros do Pet")
     print("5- Sair")
-    escolha=int(input("Opção: "))
+    escolha=int(input("\nOpção: "))
 
     if escolha==1:
         adicionar()
