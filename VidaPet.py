@@ -1,81 +1,205 @@
 import os; os.system('cls')
 
-pets={}
-infos_pets=[]
+PETS = []
+EVENTOS=[]
+
+def CRUD():
+    def adicionar():
+        nome = input("Nome do pet: ").capitalize()
+        especie = input("Espécie: ").capitalize()
+        raca = input("Raça: ").capitalize()
+        data = input("Data: ")
+        peso = input("Peso em kg: ")
+        PETS.append({"Nome": nome, "Espécie": especie, "Raça": raca, "Data": data, "Peso": peso})
+
+    def visualizar():
+        for nome in PETS:
+            print(nome)
+        print("\n")
 
 
-def adicionar():
-               nome= input("Nome do seu pet: ").capitalize()
-               especie=input("Espécie do seu pet: ").capitalize()
-               raca=input("Raça do seu pet: ").capitalize()
-               data=input("Data de nascimento do seu pet DD/MM/AAAA: ")
-               peso=input("Peso do seu pet em kg: ")
-               print("Pet Adicionado com Sucesso!")
-               #adicionar no dicionário
-               infos_pets.append(especie)
-               infos_pets.append(raca)
-               infos_pets.append(data)
-               infos_pets.append(peso)
-               for i in range(5):
-                    pets.update({nome: infos_pets})
-               print(pets)
-               #adicionar no arquivo
-               file_pets=open("pets.txt", "w", encoding="utf-8")
-               file_pets.write("\nNome do Pet: "+nome +" \nEspécie: "+especie+" \nRaça: "+raca+" \nData de nascimento:"+data+" \nPeso: "+ peso+" kg")
-               file_pets.close()
-               
-
-    
-def visualizar():
-     file_pets=open("pets.txt", "r", encoding="utf-8")
-     print(file_pets.read())
-     file_pets.close()
+    def editar():
+        for i in range(len(PETS)):
+            print(f"-{PETS[i]["Nome"]}")
+        nome_antigo = input("Digite o nome do pet que você deseja editar: ").capitalize()
+        for i in range(len(PETS)):
+            if (PETS[i]["Nome"])==nome_antigo:
+                print("NOVOS DADOS")
+                novo_nome = input("Novo nome: ").capitalize()
+                nova_especie = input("Espécie: ").capitalize()
+                nova_raca = input("Raça: ").capitalize()
+                nova_data = input("Data: ")
+                novo_peso = input("Peso em kg: ")
+                PETS[i]=({"Nome": novo_nome, "Espécie": nova_especie, "Raça": nova_raca, "Data": nova_data, "Peso": novo_peso})
+                print("Pet atualizado com sucesso!")
+                break 
+            else:
+                print("Pet não encontrado.")
 
 
-def editar(): #dando erro ao passar a info nova pro dicionario // ao resetar as informações n ficam salvas no dicionario, so se adcionar de novo
-     for i in pets.keys():
-           print(i)
-     pet_modificar=input("Qual pet você deseja modificar? Digite o nome: ").capitalize()
-     info_modificar=int(input("Qual dado você deseja modificar? \n1-Nome \n2-Espécie \n3-Raça \n4-Data de Nascimento \n5-Peso \nOpção: "))
-     if info_modificar==1:
-           info_nova=input("Digite o novo nome do seu pet: ").capitalize()
-           pets[pet_modificar][info_modificar-1]=info_nova
-           #erro na mudança de nome
-     if info_modificar==2:
-           info_nova=input("Digite a nova espécie do seu pet: ").capitalize()
-           pets[pet_modificar][info_modificar-1]=info_nova      
-     if info_modificar==3:
-           info_nova=input("Digite a nova raça do seu pet: ").capitalize()
-           pets[pet_modificar][info_modificar-1]=info_nova
-     if info_modificar==4:
-           info_nova=input("Digite a nova data de nascimento do seu pet (DD/MM/AAA): ")
-           pets[pet_modificar][info_modificar-1]=info_nova            
-     if info_modificar==5:
-           info_nova=input("Digite o novo peso do seu pet em kg: ")
-           pets[pet_modificar][info_modificar-1]=info_nova
-     print("Modificado com sucesso!")
-     print(pets)
-   
+    def remover():
+        for i in range(len(PETS)):
+            print(f"-{PETS[i]["Nome"]}")
+        nome_remover = input("Digite o nome do pet que você deseja excluir: ").capitalize()
+        for i in range(len(PETS)):
+            if PETS[i]["Nome"]==nome_remover: 
+                del PETS[i]
+                print("Pet removido com sucesso!")
+                break
+            else:
+                print("Pet não encontrado.")
+
+    def ler_arquivo():
+        arquivo = open("pets.txt", "r", encoding="utf-8")
+        linhas = arquivo.readlines()
+        for linha in linhas:
+            if linha == '':
+                break
+            lista = linha.split(",")
+            PETS.append({
+                "Nome": lista[0], 
+                "Espécie": lista[1], 
+                "Raça": lista[2], 
+                "Data": lista[3], 
+                "Peso": lista[4] 
+            })
+        arquivo.close()
+
+    def gravar_arquivo():
+        arquivo = open("pets.txt", "w", encoding="utf-8")
+        for dicionario in PETS:
+            for chaves in dicionario:
+                arquivo.writelines(dicionario[chaves] + ", ")
+            arquivo.writelines("\n")
+        arquivo.close()
+
+    ler_arquivo()
+    while True:
+        print("-="*50)
+        print("CRUD")
+        print("1- Adicionar Pet")
+        print("2- Visualizar Pets Cadastrados")
+        print("3- Editar Pet")
+        print("4- Excluir Registros do Pet")
+        print("5- Sair")
+        escolha=int(input("\nOpção: "))
+
+        if escolha==1:
+            adicionar()
+            gravar_arquivo()
+        elif escolha==2:
+            visualizar()
+        elif escolha==3:
+            editar()
+            gravar_arquivo()
+        elif escolha==4:
+            remover()
+            gravar_arquivo()
+        elif escolha==5:    
+            break
+        else:
+            print("Opção Inválida.")
+
+def CUIDADOS():
+    def eventos():
+        escolha=input("Escolha o tipo de evento que você deseja registrar: \n1-Vacinação \n2-Consultas Veterinárias \n3-Aplicação de Remédios\n(Escreva o nome): ").capitalize()
+        nome=input("\nDigite o nome do pet: ").capitalize()
+        data=input("Digite a data do evento (DD/MM/AAA): ")
+        observacao=input("Observações: ").capitalize()
+        
+        EVENTOS.append({"Evento": escolha, "Nome": nome, "Data do evento": data, "Observação": observacao})
+        
+    def visualizar():
+        try:
+            for nome in EVENTOS:
+                print(nome)
+            print("\n")
+        except FileNotFoundError:
+            print("Arquivo de eventos não encontrado.")
+
+
+
+    def acompanhar():
+        for i in range(len(EVENTOS)):
+            print(f"-{EVENTOS[i]["Nome"]}: {EVENTOS[i]["Evento"]}")
+        nome_escolhido=input("Qual o nome do pet de quem você deseja marcar o evento como feito? ").capitalize()
+        for i in range(len(EVENTOS)):
+            if (EVENTOS[i]["Nome"])==nome_escolhido: 
+                del EVENTOS[i]
+                print(f"Evento de {nome_escolhido} removido com sucesso.")
+                break
+            else:
+                print("Registro não encontrado.")
+                
+
+    def gravar_arquivo():
+        arquivo = open("eventos.txt", "w", encoding="utf-8")
+        for dicionario in EVENTOS:
+            for chaves in dicionario:
+                arquivo.writelines(dicionario[chaves] + ", ")
+            arquivo.writelines("\n")
+        arquivo.close()
+        
+    def ler_eventos():
+        try:
+            with open("eventos.txt", "r", encoding="utf-8") as file:
+                linhas = file.readlines()
+                for linha in linhas:
+                    if linha.strip() == "": 
+                        continue
+                    lista = linha.strip().split(",")
+                    EVENTOS.append({
+                        "Evento": lista[0].strip(),
+                        "Nome": lista[1].strip(),
+                        "Data do evento": lista[2].strip(),
+                        "Observação": lista[3].strip()
+                    })
+        except FileNotFoundError:
+            pass     
+
+    ler_eventos()
+
+    while True:
+        print("=-"*50)
+        print("Cadastro de Cuidados e Eventos")
+        print("1- Registrar Eventos")
+        print("2- Visualizar Eventos")
+        print("3- Marcar Eventos como Feitos")
+        print("4- Sair")
+        escolha=int(input("\nOpção: "))
+
+        if escolha==1:
+            eventos()
+            gravar_arquivo()
+        elif escolha==2:
+            visualizar()
+        elif escolha==3:
+            acompanhar()
+            gravar_arquivo()
+        elif escolha==4:
+            break
+        else:
+            print("Opção Inválida.")
+
 
 while True:
-     print("-="*30)
-     print("Bem-vindo ao CRUD")
-     print("1- Adicionar Pet")
-     print("2- Visualizar Pets Cadastrados")
-     print("3- Editar Pet")
-     print("4- Excluir Registros do Pet")
-     print("5- Sair")
-     escolha=int(input("Opção: "))
+    print("-="*50)
+    print("Bem-vindo ao Vida Pet")
+    print("1- CRUD")
+    print("2- Cuidados e Eventos")
+    print("3- Metas e Atualizações")
+    print("4- Sair")
+    escolha=int(input("\nOpção: "))
 
-     if escolha==1:
-         adicionar()
-     elif escolha==2:
-         visualizar()
-     elif escolha==3:
-          editar()
-           
-     elif escolha==5:
-         break
+    if escolha==1:
+        CRUD()
+    elif escolha==2:
+        CUIDADOS()
+  
+    elif escolha==4:
+        break
+    else:
+        print("Opção Inválida.")
 
 
 
