@@ -18,11 +18,12 @@ def visualizar():
 
 
 def editar():
-    print(PETS)
+    for i in range(len(PETS)):
+        print(f"-{PETS[i]["nome"]}")
     nome_antigo = input("Digite o nome do pet que você deseja editar: ").capitalize()
     for i in range(len(PETS)):
         if (PETS[i]["nome"])==nome_antigo:
-            print("Digite os novos dados:")
+            print("NOVOS DADOS")
             novo_nome = input("Novo nome: ").capitalize()
             nova_especie = input("Espécie: ").capitalize()
             nova_raca = input("Raça: ").capitalize()
@@ -30,16 +31,20 @@ def editar():
             novo_peso = input("Peso em kg: ")
             PETS[i]=({"nome": novo_nome, "especie": nova_especie, "raca": nova_raca, "data": nova_data, "peso": novo_peso})
             print("Pet atualizado com sucesso!")
+            break
         else:
             print("Pet não encontrado.")
 
 
 def remover():
+    for i in range(len(PETS)):
+        print(f"-{PETS[i]["nome"]}")
     nome_remover = input("Digite o nome do pet que você deseja excluir: ").capitalize()
     for i in range(len(PETS)):
-        if (PETS[i]["nome"])==nome_remover:
+        if (PETS[i]["nome"])==nome_remover: #erro aqui
             del PETS[i]
             print("Pet removido com sucesso!")
+            break
         else:
             print("Pet não encontrado.")
 
@@ -50,7 +55,6 @@ def ler_arquivo():
         if linha == '':
             break
         lista = linha.split(",")
-        print(lista)
         PETS.append({
             "nome": lista[0], 
             "especie": lista[1], 
