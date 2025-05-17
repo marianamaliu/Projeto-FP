@@ -1,5 +1,65 @@
+import os; os.system('cls')
+
+pets={}
+infos_pets=[]
+ARQUIVO_PETS = 'nomePets.txt'
 HUMOR_PETS = 'humor.txt'
-ARQUIVO_PETS = 'pets.txt'
+
+
+def adicionar():
+               nome= input("Nome do seu pet: ").capitalize()
+               especie=input("Espécie do seu pet: ").capitalize()
+               raca=input("Raça do seu pet: ").capitalize()
+               data=input("Data de nascimento do seu pet DD/MM/AAAA: ")
+               peso=input("Peso do seu pet em kg: ")
+               print("Pet Adicionado com Sucesso!")
+               #adicionar no dicionário
+               infos_pets.append(especie)
+               infos_pets.append(raca)
+               infos_pets.append(data)
+               infos_pets.append(peso)
+               for i in range(5):
+                    pets.update({nome: infos_pets})
+               print(pets)
+               #adicionar no arquivo
+               file_pets=open("pets.txt", "w", encoding="utf-8")
+               file_pets.write("\nNome do Pet: "+nome +" \nEspécie: "+especie+" \nRaça: "+raca+" \nData de nascimento:"+data+" \nPeso: "+ peso+" kg")
+               file_pets.close()
+               with open(ARQUIVO_PETS, 'a', encoding='utf-8') as f:
+                    f.write(f"{nome}\n")
+               
+
+    
+def visualizar():
+     file_pets=open("pets.txt", "r", encoding="utf-8")
+     print(file_pets.read())
+     file_pets.close()
+
+
+def editar(): #dando erro ao passar a info nova pro dicionario // ao resetar as informações n ficam salvas no dicionario, so se adcionar de novo
+     for i in pets.keys():
+           print(i)
+     pet_modificar=input("Qual pet você deseja modificar? Digite o nome: ").capitalize()
+     info_modificar=int(input("Qual dado você deseja modificar? \n1-Nome \n2-Espécie \n3-Raça \n4-Data de Nascimento \n5-Peso \nOpção: "))
+     if info_modificar==1:
+           info_nova=input("Digite o novo nome do seu pet: ").capitalize()
+           pets[pet_modificar][info_modificar-1]=info_nova
+           #erro na mudança de nome
+     if info_modificar==2:
+           info_nova=input("Digite a nova espécie do seu pet: ").capitalize()
+           pets[pet_modificar][info_modificar-1]=info_nova      
+     if info_modificar==3:
+           info_nova=input("Digite a nova raça do seu pet: ").capitalize()
+           pets[pet_modificar][info_modificar-1]=info_nova
+     if info_modificar==4:
+           info_nova=input("Digite a nova data de nascimento do seu pet (DD/MM/AAA): ")
+           pets[pet_modificar][info_modificar-1]=info_nova            
+     if info_modificar==5:
+           info_nova=input("Digite o novo peso do seu pet em kg: ")
+           pets[pet_modificar][info_modificar-1]=info_nova
+     print("Modificado com sucesso!")
+     print(pets)
+
 
 def AcoesHumor(MediaHumor, QuantidadeHumor, NomePet):
     if MediaHumor >= 0 and MediaHumor < 2:
@@ -21,6 +81,17 @@ def AcoesHumor(MediaHumor, QuantidadeHumor, NomePet):
     return acao
 
 
+def ConfirmacaoExistenciaPet(nome):
+    try:    
+        with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
+                for linha in f:
+                    if linha.strip() == nome:
+                        return True
+        return False
+    except FileNotFoundError:
+        return False
+
+
 def PerguntaHumor(nome):
     while True:
         try:
@@ -28,62 +99,41 @@ def PerguntaHumor(nome):
             if humor>=0 and humor<=10:
                 with open(HUMOR_PETS, 'a', encoding='utf-8') as f:
                     f.write(f"{nome},{humor}\n")
-                    print(f"O humor de {nome} foi atualizado com sucesso!")
+                    print(f"O humor de {nome} foi registrado com sucesso!")
                 break
             else:
                 print("Número inválido! Digite número entre 0 e 10.")
         except ValueError:
             print("Resposta inválida! Só é permitido números inteiros entre 0 e 10.")
 
-while True:
-    decisao = int(input("1-adicionar\n2-visualizar\n3-editar\n4-excluir\n5-registrar humor: "))
 
-    #adicionar pet -> precisa de confirmação se o pet ja foi registrado
-    if decisao == 1:    
-        nome = input("Nome do pet: ")
-        with open(ARQUIVO_PETS, 'a', encoding='utf-8') as f:
-            f.write(f"{nome}\n")
-        PerguntaHumor(nome)
-
-    #visualizar 
-    elif decisao == 2:
-        nomes = []
-
+def visualizarPet():
+    print("PETS---------------------------------------------------------")
+    try:
         with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
                 for linha in f:
                     linha = linha.strip()
                     if linha:
-                        nomes.append(linha)        
+                        print(f"{linha}")  
+    except FileNotFoundError:
+        return
+    print("--------------------------------------------------------------")
 
-        for pet in nomes:
+def visualizarPetHumor():
+    nomesPet = []
+    print("PETS---------------------------------------------------------")
+    try:
+        with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
+                for linha in f:
+                    linha = linha.strip()
+                    if linha:
+                        nomesPet.append(linha)   
+     
+        for pet in nomesPet:
             soma = 0
             cont = 0
-            with open(HUMOR_PETS, 'r', encoding='utf-8') as f2:
-                    for linha in f2:
-                        linha = linha.strip()
-                        if not linha:
-                            continue
-                        nomePet, humor_str = linha.split(',')
-                        if nomePet == pet:
-                            try:
-                                valor = int(humor_str)
-                                soma += valor
-                                cont += 1
-                            except ValueError:
-                                continue
-            if cont>0:
-                media = soma/cont
-                print(f"Humor médio de {pet}: {media:.2f}")
-            
-            else:
-                print(f"Não há registros de humor de {pet}")
-
-        if cont>0:
-            sugestao = input("Quer sugestões para melhorar ou manter o humor do seu pet? se quiser, digite 'sim': ").lower()
-            if sugestao == 'sim':
-                for pet in nomes:
-                    soma = 0
-                    with open(HUMOR_PETS, 'r', encoding='utf-8') as f2:
+            try:   
+                with open(HUMOR_PETS, 'r', encoding='utf-8') as f2:
                         for linha in f2:
                             linha = linha.strip()
                             if not linha:
@@ -93,50 +143,99 @@ while True:
                                 try:
                                     valor = int(humor_str)
                                     soma += valor
+                                    cont += 1
                                 except ValueError:
                                     continue
-                    print("\nSUGESTÕES---------------------------------------------------------")
-                    print(AcoesHumor(media, cont, pet))
-                    print("--------------------------------------------------------------------")
+            except FileNotFoundError:
+                return 
+            if cont>0:
+                print(f"{pet}")
 
-    #editar
-    elif decisao == 3:    
-        nome_editar = input("Digite o nome do pet que você quer editar: ").lower() #no código deve ter a confirmação de que esse nome existe
+    except FileNotFoundError:
+        return
+    print("--------------------------------------------------------------")
+
+
+def visualizarHumor():
+    nomes = []
+    try:
+        with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
+                for linha in f:
+                    linha = linha.strip()
+                    if linha:
+                        nomes.append(linha)   
+     
+        for pet in nomes:
+            soma = 0
+            cont = 0
+            try:   
+                with open(HUMOR_PETS, 'r', encoding='utf-8') as f2:
+                        for linha in f2:
+                            linha = linha.strip()
+                            if not linha:
+                                continue
+                            nomePet, humor_str = linha.split(',')
+                            if nomePet == pet:
+                                try:
+                                    valor = int(humor_str)
+                                    soma += valor
+                                    cont += 1
+                                except ValueError:
+                                    continue
+            except FileNotFoundError:
+                print("Não há registros de humor de nenhum pet!") 
+                return 
+            if cont>0:
+                media = soma/cont
+                print(f"Humor médio de {pet}: {media:.2f}")
+            if not nomes:
+                print("Não há registros de humor de nenhum pet!") 
+
+    except FileNotFoundError:
+        print("Não há nenhum pet registrado!")
+        return
+
+
+def editarHumor(nome_editar):
+    try:    
         with open(HUMOR_PETS, 'r', encoding='utf-8') as f:
             linhas = []
             for linha in f:
                 if linha.strip():
                     linhas.append(linha)
+    except FileNotFoundError:
+        print(f"Não há registros de humor de {nome_editar}.")
+        return
 
-        ultimo_idx = None
-        for i, linha in enumerate(linhas):
-            linha = linha.strip()
-            nome_pet, humor_pet = linha.split(',')
-            if nome_pet == nome_editar:
-                ultimo_idx = i
-        if ultimo_idx is None:
-            print(f"Não há registros de humor para {nome_editar}.")
-        else:
-            linhas.pop(ultimo_idx)
-            PerguntaHumor(nome_editar)
-            ultima = None
-            with open(HUMOR_PETS, 'r', encoding='utf-8') as f:
-                for linha in f:
-                    if linha.strip() != "":
-                        ultima = linha
-            if ultima is not None:
-                linhas.append(ultima)
-            
-            with open(HUMOR_PETS, 'w', encoding='utf-8') as f:
-                for l in linhas:    
-                    f.write(l)
+    ultimo_idx = None
+    for i, linha in enumerate(linhas):
+        linha = linha.strip()
+        nome_pet, humor_pet = linha.split(',')
+        if nome_pet == nome_editar:
+            ultimo_idx = i
+    if ultimo_idx is None:
+        print(f"Não há registros de humor para {nome_editar}.")
+    else:
+        linhas.pop(ultimo_idx)
+        PerguntaHumor(nome_editar)
+        ultima = None
+        with open(HUMOR_PETS, 'r', encoding='utf-8') as f:
+            for linha in f:
+                if linha.strip() != "":
+                    ultima = linha
+        if ultima is not None:
+            linhas.append(ultima)
+        
+        with open(HUMOR_PETS, 'w', encoding='utf-8') as f:
+            for l in linhas:    
+                f.write(l)
 
 
-    #excluir -> só tô excluindo o humor, no código deve excluir nome, etc
-    elif decisao == 4:        
-        nome_remover = input("Digite o nome do pet que você quer excluir: ") #no código deve ter a confirmação de que esse nome existe
+def excluirHumor(nome_remover):
+    try:    
         with open(HUMOR_PETS, 'r', encoding='utf-8') as f:
             linhas_filtradas = []
+            existir = 0
             for linha in f:
                 linha = linha.strip()
                 if not linha:
@@ -144,13 +243,95 @@ while True:
                 nome, humor = linha.split(',')
                 if nome != nome_remover:
                     linhas_filtradas.append(linha + '\n')
+                else:
+                    existir+=1
             with open(HUMOR_PETS, 'w', encoding='utf-8') as f:
                 f.writelines(linhas_filtradas)
-            print(f"Todos os registros de humor de {nome_remover} foram excluídos!")
+            if existir > 0:
+                print(f"Todos os registros de humor de {nome_remover} foram excluídos!")
+            else:
+                print(f"Não existia nenhum registro de humor de {nome_remover}.")
+    except FileNotFoundError:
+        print(f"Não existia nenhum registro de humor de {nome_remover}.")
 
 
-    #registrar humor diário
-    elif decisao == 5:        
-        nome = input("Nome do pet que você deseja registrar o humor: ") #em outro lugar do código deve ter a confirmação de que esse nome existe (copiar)
-        PerguntaHumor(nome)
-        print(f"Registro diário de {nome} concluído.")
+# PERGUNTA INICIAL
+while True:
+    print("-="*30)
+    print("Bem-vindo ao Vida Pet!")
+    print("1- CRUD")
+    print("2- Cadastro de Cuidados e Eventos")
+    print("3- Metas de Saúde e Bem-Estar")
+    print("4- Sugestões Personalizadas de Cuidados")
+    print("5- Humor")
+    print("6- Sair")
+    try:
+        opcao=int(input("Opção: "))
+    except ValueError:
+        print("Opção Inválida! Tente Novamente.")
+
+    if opcao==1:
+        # CRUD
+        while True:
+            print("-="*30)
+            print("Bem-vindo ao CRUD!")
+            print("1- Adicionar Pet")
+            print("2- Visualizar Pets Cadastrados")
+            print("3- Editar Pet")
+            print("4- Excluir Registros do Pet")
+            print("5- Sair")
+            escolha=int(input("Opção: "))
+
+            if escolha==1:
+                adicionar()
+            elif escolha==2:
+                visualizar()
+            elif escolha==3:
+                editar()
+                
+            elif escolha==5:
+                break
+
+
+    elif opcao==5:
+        # HUMOR
+        while True:
+            print("-="*30)
+            print("Bem-Vindo ao Setor do Humor!")
+            print("1- Registrar Humor")
+            print("2- Visualizar Humores Cadastrados")
+            print("3- Editar Humor")
+            print("4- Excluir Registros de Humor do Pet")
+            print("5- Sair")
+            try:
+                escolha=int(input("Opção: "))
+            except ValueError:
+                print("Opção Inválida! Tente Novamente.")
+            if escolha==1:
+                visualizarPet()
+                nome = input("Digite o nome do pet: ").capitalize()
+                if ConfirmacaoExistenciaPet(nome):
+                    PerguntaHumor(nome)
+                else:
+                    print(f"{nome} ainda não foi registrado.")
+            elif escolha==2:
+                visualizarHumor()
+            elif escolha==3:
+                visualizarPetHumor()
+                nome = input("Digite o nome do pet: ").capitalize()
+                if ConfirmacaoExistenciaPet(nome):
+                    editarHumor(nome)
+                else:
+                    print(f"{nome} ainda não foi registrado.")
+            elif escolha==4:
+                visualizarPetHumor()
+                nome = input("Digite o nome do pet: ").capitalize()
+                if ConfirmacaoExistenciaPet(nome):
+                    excluirHumor(nome)
+                else:
+                    print(f"{nome} ainda não foi registrado.")
+            elif escolha==5:
+                break 
+
+    elif opcao==6:
+        break
