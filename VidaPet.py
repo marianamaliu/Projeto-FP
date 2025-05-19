@@ -178,6 +178,7 @@ def CUIDADOS():
 
     def acompanhar():
         for i in range(len(EVENTOS)):
+            print("-="*30)
             print(f"-{EVENTOS[i]["Nome"]}: {EVENTOS[i]["Evento"]}")
         nome_escolhido=input("Qual o nome do pet de quem você deseja marcar o evento como feito? ").capitalize()
         for i in range(len(EVENTOS)):
@@ -239,11 +240,13 @@ def CUIDADOS():
         else:
             print("Opção Inválida! Tente Novamente.")
 
-def PERSONALIZADO(): #erro quando tem +1 pet cadastrado (ele so pega o primeiro)
+def PERSONALIZADO():
         nomes=[]
         def sugestoes():
             for i in range(len(PETS)):
                 nomes.append(PETS[i]["Nome"])
+                print("-="*30)
+                print("PETS")
                 print(f"-{PETS[i]["Nome"]}")            
             pet_escolhido = input("\nQual o nome do pet que você deseja obter sugestões de cuidado? ").capitalize()
             if pet_escolhido in nomes:
