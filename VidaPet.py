@@ -56,20 +56,23 @@ def CRUD():
                 print("Pet não encontrado.")
 
     def ler_arquivo():
-        arquivo = open("pets.txt", "r", encoding="utf-8")
-        linhas = arquivo.readlines()
-        for linha in linhas:
-            if linha == '':
-                break
-            lista = linha.split(",")
-            PETS.append({
-                "Nome": lista[0], 
-                "Espécie": lista[1], 
-                "Raça": lista[2], 
-                "Data": lista[3], 
-                "Peso": lista[4] 
-            })
-        arquivo.close()
+        try:
+            arquivo = open("pets.txt", "r", encoding="utf-8")
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                if linha == '':
+                    break
+                lista = linha.split(",")
+                PETS.append({
+                    "Nome": lista[0], 
+                    "Espécie": lista[1], 
+                    "Raça": lista[2], 
+                    "Data": lista[3], 
+                    "Peso": lista[4] 
+                })
+            arquivo.close()
+        except FileNotFoundError:
+            print("Nenhum pet registrado!")
 
     def gravar_arquivo():
         arquivo = open("pets.txt", "w", encoding="utf-8")
@@ -81,14 +84,16 @@ def CRUD():
 
     ler_arquivo()
     while True:
-        print("-="*50)
-        print("CRUD")
+        print("-=-=-=-=CRUD-=-=-=-=")
         print("1- Adicionar Pet")
         print("2- Visualizar Pets Cadastrados")
         print("3- Editar Pet")
         print("4- Excluir Registros do Pet")
         print("5- Sair")
-        escolha=int(input("\nOpção: "))
+        try:
+            escolha=int(input("\nOpção: "))
+        except ValueError:
+            print("Opção Inválida! Tente Novamente.")
 
         if escolha==1:
             adicionar()
@@ -104,7 +109,7 @@ def CRUD():
         elif escolha==5:    
             break
         else:
-            print("Opção Inválida.")
+            print("Opção Inválida. Tente Novamente.")
 
 def CUIDADOS():
     def eventos():
@@ -161,18 +166,20 @@ def CUIDADOS():
                         "Observação": lista[3].strip()
                     })
         except FileNotFoundError:
-            pass     
+            print("Nenhum evento registrado!")
 
     ler_eventos()
 
     while True:
-        print("=-"*50)
-        print("Cadastro de Cuidados e Eventos")
+        print("-=-=-=-=Cadastro de Cuidados e Eventos-=-=-=-=")
         print("1- Registrar Eventos")
         print("2- Visualizar Eventos")
         print("3- Marcar Eventos como Feitos")
         print("4- Sair")
-        escolha=int(input("\nOpção: "))
+        try:
+            escolha=int(input("\nOpção: "))
+        except ValueError:
+            print("Opção Inválida! Tente Novamente.")
 
         if escolha==1:
             eventos()
@@ -185,7 +192,94 @@ def CUIDADOS():
         elif escolha==4:
             break
         else:
-            print("Opção Inválida.")
+            print("Opção Inválida! Tente Novamente.")
+
+def PERSONALIZADO():
+        def sugestoes():
+            for i in range(len(PETS)):
+                print(f"-{PETS[i]["Nome"]}")
+            pet_escolhido = input("\nQual o nome do pet que você deseja obter sugestões de cuidado? ").capitalize()
+            for i in range(len(PETS)):
+                if (PETS[i]['Nome'])==pet_escolhido:
+                    ano_nascimento=int(input(f"Confirme o ano de nascimento de {pet_escolhido}: "))
+                    idade = 2025 - ano_nascimento
+                    especie=(PETS[i]["Espécie"])
+
+                    if especie == 'Cachorro':
+                        print("\nSugestão de cuidados:")
+                        if idade <= 1:
+                            print("\nAlimentação:\n É indicado ração premium para filhotes;" \
+                            " com maior teor de proteínas, " \
+                            "cálcio e fósforo para o desenvolvimento muscular e ósseo, " \
+                            "além de ácidos graxos essenciais que contribum para o desenvolvimento da pelagem do filhote.")
+                            print("Brinquedos:\n" \
+                            " .Pelúcias, mordedores, bolinhas e brinquedos interativos são ótimos para estimulação, diversão e a prátca de exercícios. " \
+                            "\n .Cordas e ossos podem ajudar no desenvolvimento dental e na satisfação da necessidade de morder. ")
+                            print("Exercício:\n" \
+                            " .Caminhadas curtas, brincadeiras e adestramento.\n" \
+                            "OBS: É importante começar gradualmente e aumentar a intensidade e duração do exercício conforme o filhote cresce e se fortalece.")
+                        else:
+                            print("Alimentação:\n" \
+                            " .Para cães adultos, as rações Super Premium são geralmente indicadas pelos veterinários devido à sua alta qualidade nutricional.\n" \
+                            "A proteína animal de alta qualidade e digestibilidade, além de outros ingredientes benéficos, contribuem para a saúde e longevidade do animal. ")
+                            print("Brinquedos:\n" \
+                            " .Bolinhas e Frisbees: Para estimular o instinto de caça e gastar energia.\n" \
+                            " .Mordedores e Ossos naturais: Para aliviar o estresse e limpar os dentes, além de satisfazer o instinto de mordedura.\n" \
+                            " .Kongs recheáveis com petiscos ou ração: para entreter e estimular o cão mentalmente.\n" \
+                            " .Labirintos: Para estimular o cão a resolver desafios e obter recompensas. ")
+                            print("Exercício:\n" \
+                            " .Caminhadas diárias\n" \
+                            " .Corridas (dependendo da raça e condição física)\n" \
+                            " .Brincadeiras de buscar (como bolinhas e frisbees)\n" \
+                            " .Natação")
+                        
+
+                    elif especie == 'Gato':
+                        if idade < 1:
+                            print("Alimentação:\n " \
+                            " .As rações super premium são recomendadas por sua qualidade e ingredientes, como carnes frescas, sem corantes artificiais e com nutrientes de fontes naturais.\n" \
+                            " .Rações úmidas (lata ou sachê) também são boas opções, especialmente para facilitar a ingestão para filhotes com dentinhos ainda em desenvolvimento. ")
+                            print("Brinquedos:\n" \
+                            " .varinhas com penas ou ratinhos de pelúcia: Estimulam o instinto de caça.\n" \
+                            " .Bolinhas, túneis e arranhadores: São brinquedos interativos que podem aliviar o stress do pet.  ")
+                            print("Exercício:\n" \
+                            " .Caça e Perseguição: Brincadeiras que envolvam perseguir e capturar, como usar um laser pointer, uma varinha com penas ou brinquedos que imitem presas.\n" \
+                            " .Brincadeiras Interativas: Brincadeiras de inteligência, esconder pestiscos dentro de brinquedos para que o pet precise manipular os brinquedos para obter a comida, são ótimas para entreter e estimular a mente do pet.")
+                            print("Alimentação: Ração adulta e, ocasionalmente, ração úmida.")
+                            print("Brinquedos: Arranhadores, túneis, brinquedos com laser.")
+                            print("Exercício: Brincadeiras diárias com estímulo físico.")
+                        else:
+                            print("Alimentação: Ração sênior com controle renal.")
+                            print("Brinquedos: Leves e acessíveis.")
+                            print("Exercício: Estímulo leve com petiscos ou brinquedos de fácil alcance.")
+                            break
+                    else:
+                        print("Espécie não reconhecida para sugestões.")
+
+                else:
+                    print("Pet não encontrado.")
+                break
+        print("-=-=-=-=Sugestões Personalizadas-=-=-=-=")
+    
+        with open("pets.txt","r",encoding="utf-8") as file:
+            if PETS==[]:
+                arquivo = open("pets.txt", "r", encoding="utf-8")
+                linhas = arquivo.readlines()
+                for linha in linhas:
+                    if linha == '':
+                        break
+                    lista = linha.split(",")
+                    PETS.append({
+                        "Nome": lista[0], 
+                        "Espécie": lista[1], 
+                        "Raça": lista[2], 
+                        "Data": lista[3], 
+                        "Peso": lista[4] 
+                    })
+                arquivo.close()
+                sugestoes()
+            else:
+                sugestoes()
 
 def HUMOR():
     def AcoesHumor(MediaHumor, QuantidadeHumor, NomePet):
@@ -208,6 +302,49 @@ def HUMOR():
         return acao
 
 
+    def SugestãoHumor():
+        nomes = []
+        try:
+            with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
+                    for linha in f:
+                        linha = linha.strip()
+                        if linha:
+                            nomes.append(linha)        
+
+            for pet in nomes:
+                soma = 0
+                cont = 0
+                try:    
+                    with open(HUMOR_PETS, 'r', encoding='utf-8') as f2:
+                            for linha in f2:
+                                linha = linha.strip()
+                                if not linha:
+                                    continue
+                                nomePet, humor_str = linha.split(',')
+                                if nomePet == pet:
+                                    try:
+                                        valor = int(humor_str)
+                                        soma += valor
+                                        cont += 1
+                                    except ValueError:
+                                        continue
+                except FileNotFoundError:
+                    print("-="*30)
+                    print("Nenhum humor registrado! Dessa forma não é possivel sugerir melhorias para aumentar ou manter o humor.")
+                if cont>0:
+                    media = soma/cont
+                    print("-="*30)
+                    print("\nSUGESTÕES")
+                    print(AcoesHumor(media, cont, pet))
+                    print("-="*30)
+                else:
+                    print("-="*30)
+                    print("Nenhum humor registrado! Dessa forma não é possivel sugerir melhorias para aumentar ou manter o humor.")
+        except FileNotFoundError:
+            print("-="*30)
+            print("Nenhum pet registrado!")
+
+                
     def ConfirmacaoExistenciaPet(nome):
         try:    
             with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
@@ -226,16 +363,20 @@ def HUMOR():
                 if humor>=0 and humor<=10:
                     with open(HUMOR_PETS, 'a', encoding='utf-8') as f:
                         f.write(f"{nome},{humor}\n")
+                        print("-="*30)
                         print(f"O humor de {nome} foi registrado com sucesso!")
                     break
                 else:
+                    print("-="*30)
                     print("Número inválido! Digite número entre 0 e 10.")
             except ValueError:
+                print("-="*30)
                 print("Resposta inválida! Só é permitido números inteiros entre 0 e 10.")
 
 
     def visualizarPet():
-        print("PETS---------------------------------------------------------")
+        print("-="*30)
+        print("PETS")
         try:
             with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
                     for linha in f:
@@ -244,11 +385,12 @@ def HUMOR():
                             print(f"{linha}")  
         except FileNotFoundError:
             return
-        print("--------------------------------------------------------------")
+        print("-="*30)
 
     def visualizarPetHumor():
         nomesPet = []
-        print("PETS---------------------------------------------------------")
+        print("-="*30)
+        print("PETS")
         try:
             with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
                     for linha in f:
@@ -280,7 +422,7 @@ def HUMOR():
 
         except FileNotFoundError:
             return
-        print("--------------------------------------------------------------")
+        print("-="*30)
 
 
     def visualizarHumor():
@@ -310,17 +452,25 @@ def HUMOR():
                                     except ValueError:
                                         continue
                 except FileNotFoundError:
+                    print("-="*30)
                     print("Não há registros de humor de nenhum pet!") 
                     return 
                 if cont>0:
                     media = soma/cont
+                    print("-="*30)
                     print(f"Humor médio de {pet}: {media:.2f}")
+                else:
+                    print("-="*30)
+                    print("Não há registros de humor de nenhum pet!")
                 if not nomes:
+                    print("-="*30)
                     print("Não há registros de humor de nenhum pet!") 
 
         except FileNotFoundError:
+            print("-="*30)
             print("Não há nenhum pet registrado!")
             return
+
 
 
     def editarHumor(nome_editar):
@@ -331,6 +481,7 @@ def HUMOR():
                     if linha.strip():
                         linhas.append(linha)
         except FileNotFoundError:
+            print("-="*30)
             print(f"Não há registros de humor de {nome_editar}.")
             return
 
@@ -341,6 +492,7 @@ def HUMOR():
             if nome_pet == nome_editar:
                 ultimo_idx = i
         if ultimo_idx is None:
+            print("-="*30)
             print(f"Não há registros de humor para {nome_editar}.")
         else:
             linhas.pop(ultimo_idx)
@@ -375,22 +527,26 @@ def HUMOR():
                 with open(HUMOR_PETS, 'w', encoding='utf-8') as f:
                     f.writelines(linhas_filtradas)
                 if existir > 0:
+                    print("-="*30)
                     print(f"Todos os registros de humor de {nome_remover} foram excluídos!")
                 else:
+                    print("-="*30)
                     print(f"Não existia nenhum registro de humor de {nome_remover}.")
         except FileNotFoundError:
+            print("-="*30)
             print(f"Não existia nenhum registro de humor de {nome_remover}.")
     while True:
-        print("-="*30)
-        print("Bem-Vindo ao Setor do Humor!")
+        print("-=-=-=-=Humor-=-=-=-=")
         print("1- Registrar Humor")
         print("2- Visualizar Humores Cadastrados")
         print("3- Editar Humor")
         print("4- Excluir Registros de Humor do Pet")
-        print("5- Sair")
+        print("5- Visualizar Sugestões Para Melhorar ou Manter o Humor do Seu Pet")
+        print("6- Sair")
         try:
             escolha=int(input("Opção: "))
         except ValueError:
+            print("-="*30)
             print("Opção Inválida! Tente Novamente.")
         if escolha==1:
             visualizarPet()
@@ -398,6 +554,7 @@ def HUMOR():
             if ConfirmacaoExistenciaPet(nome):
                 PerguntaHumor(nome)
             else:
+                print("-="*30)
                 print(f"{nome} ainda não foi registrado.")
         elif escolha==2:
             visualizarHumor()
@@ -407,6 +564,7 @@ def HUMOR():
             if ConfirmacaoExistenciaPet(nome):
                 editarHumor(nome)
             else:
+                print("-="*30)
                 print(f"{nome} ainda não foi registrado.")
         elif escolha==4:
             visualizarPetHumor()
@@ -416,28 +574,34 @@ def HUMOR():
             else:
                 print(f"{nome} ainda não foi registrado.")
         elif escolha==5:
+            SugestãoHumor()
+        elif escolha==6:
             break 
-
-
+        else:
+            print("Opção Inválida! Tente Novamente.")
 
 while True:
-    print("-="*50)
-    print("Bem-vindo ao Vida Pet")
+    print("-=-=-=-=Vida Pet-=-=-=-=")
     print("1- CRUD")
     print("2- Cuidados e Eventos")
     print("3- Metas e Atualizações")
-    print("4- Sugestão Personalizada")
+    print("4- Sugestões Personalizadas")
     print("5- Humor")
     print("6- Sair")
-    escolha=int(input("\nOpção: "))
+    try:
+        escolha=int(input("\nOpção: "))
+    except ValueError:
+        print("Opção Inválida! Tente Novamente.")
 
     if escolha==1:
         CRUD()
     elif escolha==2:
         CUIDADOS()
+    elif escolha==4:
+        PERSONALIZADO()
     elif escolha==5:
         HUMOR()
     elif escolha==6:
         break
     else:
-        print("Opção Inválida.")
+        print("Opção Inválida! Tente Novamente.")
