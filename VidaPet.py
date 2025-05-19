@@ -194,16 +194,16 @@ def CUIDADOS():
         else:
             print("Opção Inválida! Tente Novamente.")
 
-def PERSONALIZADO():
+def PERSONALIZADO(): #erro quando tem +1 pet cadastrado
         def sugestoes():
             for i in range(len(PETS)):
-                print(f"-{PETS[i]["Nome"]}")
+                print(f"-{PETS[i]["Nome"]}:{PETS[i]["Data"]}")
             pet_escolhido = input("\nQual o nome do pet que você deseja obter sugestões de cuidado? ").capitalize()
             for i in range(len(PETS)):
                 if (PETS[i]['Nome'])==pet_escolhido:
                     ano_nascimento=int(input(f"Confirme o ano de nascimento de {pet_escolhido}: "))
                     idade = 2025 - ano_nascimento
-                    especie=(PETS[i]["Espécie"])
+                    especie=(PETS[i]["Espécie"]).strip()
 
                     if especie == 'Cachorro':
                         print("\nSugestão de cuidados:")
