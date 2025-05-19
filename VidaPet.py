@@ -7,17 +7,30 @@ HUMOR_PETS = 'humor.txt'
 
 def CRUD():
     def adicionar():
-        nome = input("Nome do pet: ").capitalize()
-        especie = input("Espécie: ").capitalize()
-        raca = input("Raça: ").capitalize()
-        data = input("Data: ")
-        peso = input("Peso em kg: ")
-        PETS.append({"Nome": nome, "Espécie": especie, "Raça": raca, "Data": data, "Peso": peso})
-        print("Pet adicionado com sucesso!")
-        file=open(ARQUIVO_PETS, 'a', encoding='utf-8')
-        file.write(f"{nome}\n")
-        file.close()
+        while True:    
+            try:
+                nome = input("Nome do pet: ").capitalize()
+                especie = input("Espécie: ").capitalize()
+                raca = input("Raça: ").capitalize()
+                data = input("Data de nascimento (dd/mm/aaaa): ")
+                dia, mes, ano = data.split("/",2)
+                int(dia)
+                int(mes)
+                int(ano)
+                peso = input("Peso em kg: ")
+                int(peso)
+                
+                PETS.append({"Nome": nome, "Espécie": especie, "Raça": raca, "Data": data, "Peso": peso})
+                print("Pet adicionado com sucesso!")
+                file=open(ARQUIVO_PETS, 'a', encoding='utf-8')
+                file.write(f"{nome}\n")
+                file.close()
+                break
 
+            except ValueError:
+                print("Informação inválida! Digite Novamente.")
+                pass
+        
     def visualizar():
         for nome in PETS:
             print(nome)
@@ -28,20 +41,31 @@ def CRUD():
         for i in range(len(PETS)):
             print(f"-{PETS[i]["Nome"]}")
         nome_antigo = input("Digite o nome do pet que você deseja editar: ").capitalize()
+        nomesparaeditar = []
         for i in range(len(PETS)):
+            nomesparaeditar.append(PETS[i]["Nome"])
             if (PETS[i]["Nome"])==nome_antigo:
-                print("NOVOS DADOS")
-                novo_nome = input("Novo nome: ").capitalize()
-                nova_especie = input("Espécie: ").capitalize()
-                nova_raca = input("Raça: ").capitalize()
-                nova_data = input("Data: ")
-                novo_peso = input("Peso em kg: ")
-                PETS[i]=({"Nome": novo_nome, "Espécie": nova_especie, "Raça": nova_raca, "Data": nova_data, "Peso": novo_peso})
-                print("Pet atualizado com sucesso!")
-                break 
-            else:
-                print("Pet não encontrado.")
-
+                while True:
+                    try:    
+                        print("NOVOS DADOS")
+                        nova_especie = input("Espécie: ").capitalize()
+                        nova_raca = input("Raça: ").capitalize()
+                        nova_data = input("Data de nascimento (dd/mm/aaaa): ")
+                        dia, mes, ano = nova_data.split("/",2)
+                        int(dia)
+                        int(mes)
+                        int(ano)
+                        novo_peso = input("Peso em kg: ")
+                        int(novo_peso)
+                        
+                        PETS[i]=({"Nome": nome_antigo, "Espécie": nova_especie, "Raça": nova_raca, "Data": nova_data, "Peso": novo_peso})
+                        print("Pet atualizado com sucesso!")
+                        break 
+                    except ValueError:
+                        print("Informação inválida! Digite Novamente.")
+                        pass
+        if nome_antigo not in nomesparaeditar:
+            print("Pet não encontrado!")
 
     def remover():
         for i in range(len(PETS)):
@@ -56,6 +80,7 @@ def CRUD():
                 print("Pet não encontrado.")
 
     def ler_arquivo():
+        PETS.clear()
         try:
             arquivo = open("pets.txt", "r", encoding="utf-8")
             linhas = arquivo.readlines()
@@ -113,20 +138,41 @@ def CRUD():
 
 def CUIDADOS():
     def eventos():
-        escolha=input("Escolha o tipo de evento que você deseja registrar: \n1-Vacinação \n2-Consultas Veterinárias \n3-Aplicação de Remédios\n(Escreva o nome): ").capitalize()
-        nome=input("\nDigite o nome do pet: ").capitalize()
-        data=input("Digite a data do evento (DD/MM/AAA): ")
-        observacao=input("Observações: ").capitalize()
-        
-        EVENTOS.append({"Evento": escolha, "Nome": nome, "Data do evento": data, "Observação": observacao})
-        
+        nomes = []
+        for i in range(len(PETS)):
+            nomes.append(PETS[i]["Nome"])
+        while True:
+            try:
+                escolha=input("Escolha o tipo de evento que você deseja registrar: \n1-Vacinação \n2-Consultas Veterinárias \n3-Aplicação de Remédios\n(Escreva o nome): ").capitalize()
+                print("-="*30)
+                print("PETS")
+                for i in range(len(PETS)):
+                    print(f"-{PETS[i]["Nome"]}")
+                nome=input("\nDigite o nome do pet: ").capitalize()
+                if nome in nomes:
+                    data=input("Digite a data do evento (DD/MM/AAA): ")
+                    dia, mes, ano = data.split("/",2)
+                    int(dia)
+                    int(mes)
+                    int(ano)
+                    observacao=input("Observações: ").capitalize()
+                    
+                    EVENTOS.append({"Evento": escolha, "Nome": nome, "Data do evento": data, "Observação": observacao})
+                    print("Evento adicionado com sucesso!")
+                    break
+                else:
+                    print("Pet não encontrado!")
+            except ValueError:
+                print("Informação inválida! Digite Novamente.")
+                pass  
+            
     def visualizar():
         try:
             for nome in EVENTOS:
                 print(nome)
             print("\n")
         except FileNotFoundError:
-            print("Arquivo de eventos não encontrado.")
+            print("Arquivo não encontrado.")
 
 
 
@@ -169,7 +215,6 @@ def CUIDADOS():
             print("Nenhum evento registrado!")
 
     ler_eventos()
-
     while True:
         print("-=-=-=-=Cadastro de Cuidados e Eventos-=-=-=-=")
         print("1- Registrar Eventos")
@@ -194,15 +239,15 @@ def CUIDADOS():
         else:
             print("Opção Inválida! Tente Novamente.")
 
-def PERSONALIZADO(): #erro quando tem +1 pet cadastrado
+def PERSONALIZADO(): #erro quando tem +1 pet cadastrado (ele so pega o primeiro)
         def sugestoes():
             for i in range(len(PETS)):
-                print(f"-{PETS[i]["Nome"]}:{PETS[i]["Data"]}")
+                print(f"-{PETS[i]["Nome"]}")
             pet_escolhido = input("\nQual o nome do pet que você deseja obter sugestões de cuidado? ").capitalize()
             for i in range(len(PETS)):
-                if (PETS[i]['Nome'])==pet_escolhido:
-                    ano_nascimento=int(input(f"Confirme o ano de nascimento de {pet_escolhido}: "))
-                    idade = 2025 - ano_nascimento
+                if (PETS[i]["Nome"])==pet_escolhido:
+                    _, _, ano = PETS[i]["Data"].split("/")
+                    idade = 2025 - int(ano)
                     especie=(PETS[i]["Espécie"]).strip()
 
                     if especie == 'Cachorro':
@@ -580,6 +625,26 @@ def HUMOR():
         else:
             print("Opção Inválida! Tente Novamente.")
 
+def ler_arquivo():
+        PETS.clear()
+        try:
+            arquivo = open("pets.txt", "r", encoding="utf-8")
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                if linha == '':
+                    break
+                lista = linha.split(",")
+                PETS.append({
+                    "Nome": lista[0], 
+                    "Espécie": lista[1], 
+                    "Raça": lista[2], 
+                    "Data": lista[3], 
+                    "Peso": lista[4] 
+                })
+            arquivo.close()
+        except FileNotFoundError:
+            print("Nenhum pet registrado!")
+ler_arquivo()
 while True:
     print("-=-=-=-=Vida Pet-=-=-=-=")
     print("1- CRUD")
