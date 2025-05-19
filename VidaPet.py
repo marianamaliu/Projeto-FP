@@ -240,70 +240,74 @@ def CUIDADOS():
             print("Opção Inválida! Tente Novamente.")
 
 def PERSONALIZADO(): #erro quando tem +1 pet cadastrado (ele so pega o primeiro)
+        nomes=[]
         def sugestoes():
             for i in range(len(PETS)):
-                print(f"-{PETS[i]["Nome"]}")
+                nomes.append(PETS[i]["Nome"])
+                print(f"-{PETS[i]["Nome"]}")            
             pet_escolhido = input("\nQual o nome do pet que você deseja obter sugestões de cuidado? ").capitalize()
-            for i in range(len(PETS)):
-                if (PETS[i]["Nome"])==pet_escolhido:
-                    _, _, ano = PETS[i]["Data"].split("/")
-                    idade = 2025 - int(ano)
-                    especie=(PETS[i]["Espécie"]).strip()
+            if pet_escolhido in nomes:
+                for i in range(len(PETS)):
+                    if (PETS[i]["Nome"])==pet_escolhido:
+                        _, _, ano = PETS[i]["Data"].split("/")
+                        idade = 2025 - int(ano)
+                        especie=(PETS[i]["Espécie"]).strip()
 
-                    if especie == 'Cachorro':
-                        print("\nSugestão de cuidados:")
-                        if idade <= 1:
-                            print("\nAlimentação:\n É indicado ração premium para filhotes;" \
-                            " com maior teor de proteínas, " \
-                            "cálcio e fósforo para o desenvolvimento muscular e ósseo, " \
-                            "além de ácidos graxos essenciais que contribum para o desenvolvimento da pelagem do filhote.")
-                            print("Brinquedos:\n" \
-                            " .Pelúcias, mordedores, bolinhas e brinquedos interativos são ótimos para estimulação, diversão e a prátca de exercícios. " \
-                            "\n .Cordas e ossos podem ajudar no desenvolvimento dental e na satisfação da necessidade de morder. ")
-                            print("Exercício:\n" \
-                            " .Caminhadas curtas, brincadeiras e adestramento.\n" \
-                            "OBS: É importante começar gradualmente e aumentar a intensidade e duração do exercício conforme o filhote cresce e se fortalece.")
+                        if especie == 'Cachorro':
+                            print("\nSugestão de cuidados:")
+                            if idade <= 1:
+                                print("\nAlimentação:\n É indicado ração premium para filhotes;" \
+                                " com maior teor de proteínas, " \
+                                "cálcio e fósforo para o desenvolvimento muscular e ósseo, " \
+                                "além de ácidos graxos essenciais que contribum para o desenvolvimento da pelagem do filhote.")
+                                print("Brinquedos:\n" \
+                                " .Pelúcias, mordedores, bolinhas e brinquedos interativos são ótimos para estimulação, diversão e a prátca de exercícios. " \
+                                "\n .Cordas e ossos podem ajudar no desenvolvimento dental e na satisfação da necessidade de morder. ")
+                                print("Exercício:\n" \
+                                " .Caminhadas curtas, brincadeiras e adestramento.\n" \
+                                "OBS: É importante começar gradualmente e aumentar a intensidade e duração do exercício conforme o filhote cresce e se fortalece.")
+                            else:
+                                print("\nAlimentação:\n" \
+                                " .Para cães adultos, as rações Super Premium são geralmente indicadas pelos veterinários devido à sua alta qualidade nutricional.\n" \
+                                "A proteína animal de alta qualidade e digestibilidade, além de outros ingredientes benéficos, contribuem para a saúde e longevidade do animal. ")
+                                print("Brinquedos:\n" \
+                                " .Bolinhas e Frisbees: Para estimular o instinto de caça e gastar energia.\n" \
+                                " .Mordedores e Ossos naturais: Para aliviar o estresse e limpar os dentes, além de satisfazer o instinto de mordedura.\n" \
+                                " .Kongs recheáveis com petiscos ou ração: para entreter e estimular o cão mentalmente.\n" \
+                                " .Labirintos: Para estimular o cão a resolver desafios e obter recompensas. ")
+                                print("Exercício:\n" \
+                                " .Caminhadas diárias\n" \
+                                " .Corridas (dependendo da raça e condição física)\n" \
+                                " .Brincadeiras de buscar (como bolinhas e frisbees)\n" \
+                                " .Natação")
+                            
+
+                        elif especie == 'Gato':
+                            print("\nSugestão de cuidados:")
+                            if idade < 1:
+                                print("\nAlimentação:\n " \
+                                " .As rações super premium são recomendadas por sua qualidade e ingredientes, como carnes frescas, sem corantes artificiais e com nutrientes de fontes naturais.\n" \
+                                " .Rações úmidas (lata ou sachê) também são boas opções, especialmente para facilitar a ingestão para filhotes com dentinhos ainda em desenvolvimento. ")
+                                print("Brinquedos:\n" \
+                                " .varinhas com penas ou ratinhos de pelúcia: Estimulam o instinto de caça.\n" \
+                                " .Bolinhas, túneis e arranhadores: São brinquedos interativos que podem aliviar o stress do pet.  ")
+                                print("Exercício:\n" \
+                                " .Caça e Perseguição: Brincadeiras que envolvam perseguir e capturar, como usar um laser pointer, uma varinha com penas ou brinquedos que imitem presas.\n" \
+                                " .Brincadeiras Interativas: Brincadeiras de inteligência, esconder pestiscos dentro de brinquedos para que o pet precise manipular os brinquedos para obter a comida, são ótimas para entreter e estimular a mente do pet.")
+                                print("Alimentação: Ração adulta e, ocasionalmente, ração úmida.")
+                                print("Brinquedos: Arranhadores, túneis, brinquedos com laser.")
+                                print("Exercício: Brincadeiras diárias com estímulo físico.")
+                            else:
+                                print("\nAlimentação: Ração sênior com controle renal.")
+                                print("Brinquedos: Leves e acessíveis.")
+                                print("Exercício: Estímulo leve com petiscos ou brinquedos de fácil alcance.")
+                                
                         else:
-                            print("Alimentação:\n" \
-                            " .Para cães adultos, as rações Super Premium são geralmente indicadas pelos veterinários devido à sua alta qualidade nutricional.\n" \
-                            "A proteína animal de alta qualidade e digestibilidade, além de outros ingredientes benéficos, contribuem para a saúde e longevidade do animal. ")
-                            print("Brinquedos:\n" \
-                            " .Bolinhas e Frisbees: Para estimular o instinto de caça e gastar energia.\n" \
-                            " .Mordedores e Ossos naturais: Para aliviar o estresse e limpar os dentes, além de satisfazer o instinto de mordedura.\n" \
-                            " .Kongs recheáveis com petiscos ou ração: para entreter e estimular o cão mentalmente.\n" \
-                            " .Labirintos: Para estimular o cão a resolver desafios e obter recompensas. ")
-                            print("Exercício:\n" \
-                            " .Caminhadas diárias\n" \
-                            " .Corridas (dependendo da raça e condição física)\n" \
-                            " .Brincadeiras de buscar (como bolinhas e frisbees)\n" \
-                            " .Natação")
-                        
+                            print("Espécie não reconhecida para sugestões.")
 
-                    elif especie == 'Gato':
-                        if idade < 1:
-                            print("Alimentação:\n " \
-                            " .As rações super premium são recomendadas por sua qualidade e ingredientes, como carnes frescas, sem corantes artificiais e com nutrientes de fontes naturais.\n" \
-                            " .Rações úmidas (lata ou sachê) também são boas opções, especialmente para facilitar a ingestão para filhotes com dentinhos ainda em desenvolvimento. ")
-                            print("Brinquedos:\n" \
-                            " .varinhas com penas ou ratinhos de pelúcia: Estimulam o instinto de caça.\n" \
-                            " .Bolinhas, túneis e arranhadores: São brinquedos interativos que podem aliviar o stress do pet.  ")
-                            print("Exercício:\n" \
-                            " .Caça e Perseguição: Brincadeiras que envolvam perseguir e capturar, como usar um laser pointer, uma varinha com penas ou brinquedos que imitem presas.\n" \
-                            " .Brincadeiras Interativas: Brincadeiras de inteligência, esconder pestiscos dentro de brinquedos para que o pet precise manipular os brinquedos para obter a comida, são ótimas para entreter e estimular a mente do pet.")
-                            print("Alimentação: Ração adulta e, ocasionalmente, ração úmida.")
-                            print("Brinquedos: Arranhadores, túneis, brinquedos com laser.")
-                            print("Exercício: Brincadeiras diárias com estímulo físico.")
-                        else:
-                            print("Alimentação: Ração sênior com controle renal.")
-                            print("Brinquedos: Leves e acessíveis.")
-                            print("Exercício: Estímulo leve com petiscos ou brinquedos de fácil alcance.")
-                            break
-                    else:
-                        print("Espécie não reconhecida para sugestões.")
-
-                else:
-                    print("Pet não encontrado.")
-                break
+            else:
+                print("Pet não encontrado.")
+             
         print("-=-=-=-=Sugestões Personalizadas-=-=-=-=")
     
         with open("pets.txt","r",encoding="utf-8") as file:
