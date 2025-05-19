@@ -56,20 +56,24 @@ def CRUD():
                 print("Pet não encontrado.")
 
     def ler_arquivo():
-        arquivo = open("pets.txt", "r", encoding="utf-8")
-        linhas = arquivo.readlines()
-        for linha in linhas:
-            if linha == '':
-                break
-            lista = linha.split(",")
-            PETS.append({
-                "Nome": lista[0], 
-                "Espécie": lista[1], 
-                "Raça": lista[2], 
-                "Data": lista[3], 
-                "Peso": lista[4] 
-            })
-        arquivo.close()
+        try:   
+            arquivo = open("pets.txt", "r", encoding="utf-8")
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                if linha == '':
+                    break
+                lista = linha.split(",")
+                PETS.append({
+                    "Nome": lista[0], 
+                    "Espécie": lista[1], 
+                    "Raça": lista[2], 
+                    "Data": lista[3], 
+                    "Peso": lista[4] 
+                })
+            arquivo.close()
+        except FileNotFoundError:
+            print("Nenhum pet registrado!")
+
 
     def gravar_arquivo():
         arquivo = open("pets.txt", "w", encoding="utf-8")
@@ -235,13 +239,19 @@ def HUMOR():
                                     except ValueError:
                                         continue
                 except FileNotFoundError:
+                    print("-="*30)
                     print("Nenhum humor registrado! Dessa forma não é possivel sugerir melhorias para aumentar ou manter o humor.")
                 if cont>0:
                     media = soma/cont
-                    print("\nSUGESTÕES---------------------------------------------------------")
+                    print("-="*30)
+                    print("\nSUGESTÕES")
                     print(AcoesHumor(media, cont, pet))
-                    print("--------------------------------------------------------------------")
+                    print("-="*30)
+                else:
+                    print("-="*30)
+                    print("Nenhum humor registrado! Dessa forma não é possivel sugerir melhorias para aumentar ou manter o humor.")
         except FileNotFoundError:
+            print("-="*30)
             print("Nenhum pet registrado!")
 
                 
@@ -263,16 +273,20 @@ def HUMOR():
                 if humor>=0 and humor<=10:
                     with open(HUMOR_PETS, 'a', encoding='utf-8') as f:
                         f.write(f"{nome},{humor}\n")
+                        print("-="*30)
                         print(f"O humor de {nome} foi registrado com sucesso!")
                     break
                 else:
+                    print("-="*30)
                     print("Número inválido! Digite número entre 0 e 10.")
             except ValueError:
+                print("-="*30)
                 print("Resposta inválida! Só é permitido números inteiros entre 0 e 10.")
 
 
     def visualizarPet():
-        print("PETS---------------------------------------------------------")
+        print("-="*30)
+        print("PETS")
         try:
             with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
                     for linha in f:
@@ -281,11 +295,12 @@ def HUMOR():
                             print(f"{linha}")  
         except FileNotFoundError:
             return
-        print("--------------------------------------------------------------")
+        print("-="*30)
 
     def visualizarPetHumor():
         nomesPet = []
-        print("PETS---------------------------------------------------------")
+        print("-="*30)
+        print("PETS")
         try:
             with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
                     for linha in f:
@@ -317,7 +332,7 @@ def HUMOR():
 
         except FileNotFoundError:
             return
-        print("--------------------------------------------------------------")
+        print("-="*30)
 
 
     def visualizarHumor():
@@ -347,17 +362,25 @@ def HUMOR():
                                     except ValueError:
                                         continue
                 except FileNotFoundError:
+                    print("-="*30)
                     print("Não há registros de humor de nenhum pet!") 
                     return 
                 if cont>0:
                     media = soma/cont
+                    print("-="*30)
                     print(f"Humor médio de {pet}: {media:.2f}")
+                else:
+                    print("-="*30)
+                    print("Não há registros de humor de nenhum pet!")
                 if not nomes:
+                    print("-="*30)
                     print("Não há registros de humor de nenhum pet!") 
 
         except FileNotFoundError:
+            print("-="*30)
             print("Não há nenhum pet registrado!")
             return
+
 
 
     def editarHumor(nome_editar):
@@ -368,6 +391,7 @@ def HUMOR():
                     if linha.strip():
                         linhas.append(linha)
         except FileNotFoundError:
+            print("-="*30)
             print(f"Não há registros de humor de {nome_editar}.")
             return
 
@@ -378,6 +402,7 @@ def HUMOR():
             if nome_pet == nome_editar:
                 ultimo_idx = i
         if ultimo_idx is None:
+            print("-="*30)
             print(f"Não há registros de humor para {nome_editar}.")
         else:
             linhas.pop(ultimo_idx)
@@ -412,10 +437,13 @@ def HUMOR():
                 with open(HUMOR_PETS, 'w', encoding='utf-8') as f:
                     f.writelines(linhas_filtradas)
                 if existir > 0:
+                    print("-="*30)
                     print(f"Todos os registros de humor de {nome_remover} foram excluídos!")
                 else:
+                    print("-="*30)
                     print(f"Não existia nenhum registro de humor de {nome_remover}.")
         except FileNotFoundError:
+            print("-="*30)
             print(f"Não existia nenhum registro de humor de {nome_remover}.")
     while True:
         print("-="*30)
@@ -429,6 +457,7 @@ def HUMOR():
         try:
             escolha=int(input("Opção: "))
         except ValueError:
+            print("-="*30)
             print("Opção Inválida! Tente Novamente.")
         if escolha==1:
             visualizarPet()
@@ -436,6 +465,7 @@ def HUMOR():
             if ConfirmacaoExistenciaPet(nome):
                 PerguntaHumor(nome)
             else:
+                print("-="*30)
                 print(f"{nome} ainda não foi registrado.")
         elif escolha==2:
             visualizarHumor()
@@ -445,6 +475,7 @@ def HUMOR():
             if ConfirmacaoExistenciaPet(nome):
                 editarHumor(nome)
             else:
+                print("-="*30)
                 print(f"{nome} ainda não foi registrado.")
         elif escolha==4:
             visualizarPetHumor()
