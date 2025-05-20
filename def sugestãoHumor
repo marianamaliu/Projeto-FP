@@ -1,0 +1,52 @@
+def SugestãoHumor():
+        nomes = []
+        try:
+            with open(ARQUIVO_PETS, 'r', encoding='utf-8') as f:
+                    for linha in f:
+                        linha = linha.strip()
+                        if linha:
+                            nomes.append(linha)    
+            try:
+                with open(HUMOR_PETS, 'r', encoding='utf-8') as f2:
+                    conteudo = f2.read().strip()
+                    if not conteudo:
+                        print("-="*30)
+                        print("Nenhum humor registrado! Não é possível sugerir melhorias.")
+                        return
+            except FileNotFoundError:
+                print("-="*30)
+                print("Nenhum humor registrado! Não é possível sugerir melhorias.")
+                return      
+
+            for pet in nomes:
+                soma = 0
+                cont = 0
+                try:    
+                    with open(HUMOR_PETS, 'r', encoding='utf-8') as f2:
+                            for linha in f2:
+                                linha = linha.strip()
+                                if not linha:
+                                    continue
+                                nomePet, humor_str = linha.split(',')
+                                if nomePet == pet:
+                                    try:
+                                        valor = int(humor_str)
+                                        soma += valor
+                                        cont += 1
+                                    except ValueError:
+                                        continue
+                except FileNotFoundError:
+                    print("-="*30)
+                    print("Nenhum humor registrado! Dessa forma não é possivel sugerir melhorias para aumentar ou manter o humor.")
+                    return
+                if cont>0:
+                    media = soma/cont
+                    print("-="*30)
+                    print("SUGESTÕES")
+                    print(AcoesHumor(media, cont, pet))
+                    print("-="*30)
+                
+        except FileNotFoundError:
+            print("-="*30)
+            print("Nenhum pet registrado!")
+            return
