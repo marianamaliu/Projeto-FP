@@ -242,8 +242,6 @@ def CRUD():
                 if PETS[i]["Nome"]==nome_remover: 
                     del PETS[i]
                     print("Pet removido com sucesso!")
-                    excluirnomehumor(nome_remover)
-                    excluirnomehumornome(nome_remover)
                     break
                 else:
                     print("Pet não encontrado.")
@@ -303,6 +301,7 @@ def CRUD():
                 print("Opção Inválida. Tente Novamente.")
         except ValueError:
             print("Opção Inválida! Digite um número inteiro.")
+  
             
 def CUIDADOS():
     def eventos():
@@ -311,7 +310,7 @@ def CUIDADOS():
             print("Nenhum pet cadastrado!")
         else:
             for i in range(len(PETS)):
-                nomes.append(PETS[i]["Nome"])
+                nomes.append(PETS[i]["Nome"])   
             while True:
                 try:
                     escolha=input("Escolha o tipo de evento que você deseja registrar: \n1-Vacinação \n2-Consultas Veterinárias \n3-Aplicação de Remédios\n(Escreva o nome): ").capitalize()
@@ -484,8 +483,9 @@ def CUIDADOS():
                 print("Opção Inválida! Tente Novamente.")
 
 def PERSONALIZADO():
-        nomes=[]
         def sugestoes():
+            nomes=[]
+            print("-=-=-=-=Sugestões Personalizadas-=-=-=-=")
             print("PETS")
             for i in range(len(PETS)):
                 nomes.append(PETS[i]["Nome"])
@@ -552,8 +552,8 @@ def PERSONALIZADO():
 
             else:
                 print("Pet não encontrado.")
-             
-        print("-=-=-=-=Sugestões Personalizadas-=-=-=-=")
+            
+
     
         with open("pets.txt","r",encoding="utf-8") as file:
             if PETS==[]:
@@ -905,60 +905,64 @@ def META():
     opc = 0
     global quantMC
     while True:
-            print("\n1 - Adicionar / 2 - Atualizar / 3- Visualizar / 4 - Sair ")
+            print("-=-=-=-=Metas-=-=-=-=")
+            print("1- Adicionar Metas \n2- Atualizar Metas \n3- Visualizar Metas \n4- Sair ")
             try:
                 opc = int(input("\nQual opcao? "))
                 if opc == 1:
-                    for i in range(len(PETS)):
-                        print(f"-{PETS[i]["Nome"]}")
-                    escolha = input("\nPara qual pet você quer estabelecer uma meta? ").capitalize()
-                    for i in range(len(PETS)):
-                        if (PETS[i]["Nome"])==escolha:
-                            acao = input(f"\nQual a meta definida para o pet {escolha}? ")
-                            relacao_tempo = input("\nEssa meta será diária, semanal, mensal ou anual? (D / S / M / A): ").lower()
-                            if relacao_tempo == "d":
-                                frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
-                                METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por dia")
-                            elif relacao_tempo == "s":
-                                tipo_semana = int(input("\nEscolha qual tipo será: 1 - por semana / 2 - a cada x semanas "))
-                                if tipo_semana == 1:
+                    if not PETS:
+                        print("Nenhum pet cadastrado!")
+                    else:
+                        for i in range(len(PETS)):
+                            print(f"-{PETS[i]["Nome"]}")
+                        escolha = input("\nPara qual pet você quer estabelecer uma meta? ").capitalize()
+                        for i in range(len(PETS)):
+                            if (PETS[i]["Nome"])==escolha:
+                                acao = input(f"\nQual a meta definida para o pet {escolha}? ")
+                                relacao_tempo = input("\nEssa meta será diária, semanal, mensal ou anual? (D / S / M / A): ").lower()
+                                if relacao_tempo == "d":
                                     frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
-                                    METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por semana")
-                                    print("\nMeta registrada com sucesso!")
-                                elif tipo_semana == 2:
-                                    frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
-                                    METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} a cada {frequencia} semanas")
-                                    print("\nMeta registrada com sucesso!")
-                            elif relacao_tempo == "m":
-                                tipo_mes = int(input("\nEscolha qual tipo será: 1 - por mês / 2 - a cada x meses "))
-                                if tipo_mes == 1:
-                                    frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
-                                    METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por mês")
-                                    print("\nMeta registrada com sucesso!")
-                                elif tipo_mes == 2:
-                                    frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
-                                    METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} a cada {frequencia} meses ")
-                                    print("\nMeta registrada com sucesso!")
-                            elif relacao_tempo == "a":
-                                tipo_ano = int(input("\nEscolha qual tipo será: 1 - por ano / 2 - a cada x anos "))
-                                if tipo_ano == 1:
-                                    frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
-                                    METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por ano")
-                                    print("\nMeta registrada com sucesso!")
-                                elif tipo_ano == 2: 
-                                    frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
-                                    METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} a cada {frequencia} anos ")
-                                    print("\nMeta registrada com sucesso!")
+                                    METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por dia")
+                                elif relacao_tempo == "s":
+                                    tipo_semana = int(input("\nEscolha qual tipo será: 1 - por semana / 2 - a cada x semanas "))
+                                    if tipo_semana == 1:
+                                        frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
+                                        METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por semana")
+                                        print("\nMeta registrada com sucesso!")
+                                    elif tipo_semana == 2:
+                                        frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
+                                        METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} a cada {frequencia} semanas")
+                                        print("\nMeta registrada com sucesso!")
+                                elif relacao_tempo == "m":
+                                    tipo_mes = int(input("\nEscolha qual tipo será: 1 - por mês / 2 - a cada x meses "))
+                                    if tipo_mes == 1:
+                                        frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
+                                        METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por mês")
+                                        print("\nMeta registrada com sucesso!")
+                                    elif tipo_mes == 2:
+                                        frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
+                                        METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} a cada {frequencia} meses ")
+                                        print("\nMeta registrada com sucesso!")
+                                elif relacao_tempo == "a":
+                                    tipo_ano = int(input("\nEscolha qual tipo será: 1 - por ano / 2 - a cada x anos "))
+                                    if tipo_ano == 1:
+                                        frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
+                                        METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} {frequencia} vezes por ano")
+                                        print("\nMeta registrada com sucesso!")
+                                    elif tipo_ano == 2: 
+                                        frequencia = float(input("\nCom que frequência você quer realizá-la?  "))
+                                        METAS[quantMC]=(f"{quantMC}ª META -> {escolha} -> {acao} a cada {frequencia} anos ")
+                                        print("\nMeta registrada com sucesso!")
+                                else:
+                                    print("Informação inválida! Digite novamente!")
+                                break
                             else:
-                                print("Informação inválida! Digite novamente!")
-                            break
-                        else:
-                            print("Pet não encontrado.")    
+                                print("Pet não encontrado.")    
 
-                    PROGRESSO[quantMC] = 0
-                    print(f"\n {METAS}")
-                    quantMC+=1
-                    gravar_metas()
+                        PROGRESSO[quantMC] = 0
+                        print(f"\n {METAS}")
+                        quantMC+=1
+                        gravar_metas()
                 elif opc == 2:
                     if not METAS:
                         print("\nNão há metas registradas.")
