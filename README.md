@@ -1,4 +1,5 @@
 —--—--- —--VIDA PET—---—--- —--
+
 Nossa plataforma foi desenvolvida para oferecer um cuidado completo e afetivo com os pets, auxiliando tutores, como Camila, que tem dificuldade de administrar as necessidades de seus pets. Nosso sistema, o “Vida Pet”, ajuda a acompanhar e registrar o dia a dia dos pets, com funções que vão do cadastro à análise do humor, oferecendo um controle prático da saúde e bem-estar dos pets. São diversas funcionalidades reunidas em um só lugar para tornar o cuidado com os pets mais simples e eficiente no dia a dia dos tutores.
 
 
