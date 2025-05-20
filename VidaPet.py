@@ -463,10 +463,6 @@ def HUMOR():
                     print("\nSUGESTÕES")
                     print(AcoesHumor(media, cont, pet))
                     print("-="*30)
-                else:
-                    print("-="*30)
-                    print("Nenhum humor registrado! Dessa forma não é possivel sugerir melhorias para aumentar ou manter o humor.")
-                    return
         except FileNotFoundError:
             print("-="*30)
             print("Nenhum pet registrado!")
