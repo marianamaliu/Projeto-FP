@@ -243,7 +243,7 @@ def CRUD():
                     del PETS[i]
                     print("Pet removido com sucesso!")
                     break
-                else:
+                if nome_remover not in PETS:
                     print("Pet não encontrado.")
 
     def ler_arquivo():
